@@ -344,8 +344,11 @@ exports.forgotPassword = async (req, res, next) => {
 }
 
 exports.getAdminShow = async (req, res, next) => {
-    try{
-        const showPass = await AdmiSchema.find()
-        res.status(200).json(showPass)
-    }catch(err){next(err)}
-}
+  try {
+    const showPass = await AdmiSchema.find();
+    res.status(200).json(showPass);
+  } catch (err) {
+    console.error("Error fetching admin data:", err);
+    next(err);
+  }
+};
