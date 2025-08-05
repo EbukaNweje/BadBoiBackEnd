@@ -7,5 +7,7 @@ const AdmiSchema = new mongoose.Schema({
   
 }, {timestamps: true});
 
-module.exports = AdmiSchema = mongoose.model('AdmiSchema', AdmiSchema )
+ const AdmiSchemas = mongoose.model('AdmiSchema', AdmiSchema )
+
+ module.exports = AdmiSchemas
 
